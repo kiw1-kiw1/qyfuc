@@ -31,37 +31,34 @@
     .btn-toggle:hover {
       background-color: #5e35b1;
     }
+    /* CONTENEDOR PRINCIPAL: flex fila para columnas (semestres) */
     .container {
       display: flex;
       gap: 1rem;
-      overflow-x: auto;
+      overflow-x: auto; /* scroll horizontal */
       padding-bottom: 1rem;
       scroll-behavior: smooth;
     }
-    .container.vertical {
-      flex-direction: column;
-      overflow-x: visible;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding-right: 1rem;
-    }
+    /* CADA COLUMNA (SEMESTRE) con lista vertical */
     .semestre {
       background: white;
       border: 2px solid #9c27b0;
       border-radius: 12px;
       padding: 1rem;
       min-width: 280px;
-      flex-shrink: 0;
+      flex-shrink: 0; /* no se achica */
       box-shadow: 0 2px 8px rgb(156 39 176 / 0.2);
+      display: flex;
+      flex-direction: column; /* vertical lista de ramos */
     }
     .semestre h2 {
       margin-top: 0;
       border-bottom: 2px solid #ce93d8;
       padding-bottom: 0.3rem;
+      text-align: center;
     }
     .curso {
-      display: inline-block;
-      margin: 6px 6px 6px 0;
+      margin: 6px 0; /* ramos apilados verticalmente */
       padding: 8px 14px;
       border: 2px solid #9c27b0;
       border-radius: 10px;
@@ -71,6 +68,7 @@
       user-select: none;
       transition: 0.25s;
       font-size: 0.9rem;
+      text-align: center;
     }
     .curso:hover {
       background: #ce93d8;
@@ -93,9 +91,8 @@
 </head>
 <body>
   <h1>Malla Química y Farmacia UC</h1>
-  <button class="btn-toggle" id="btnToggle">Cambiar a vista horizontal</button>
 
-  <div class="container vertical" id="semestres">
+  <div class="container" id="semestres">
     <!-- 1º Semestre -->
     <div class="semestre">
       <h2>1° Semestre</h2>
@@ -200,17 +197,6 @@
 
   <script>
     const container = document.getElementById('semestres');
-    const btnToggle = document.getElementById('btnToggle');
-
-    btnToggle.addEventListener('click', () => {
-      if (container.classList.contains('vertical')) {
-        container.classList.remove('vertical');
-        btnToggle.textContent = 'Cambiar a vista vertical';
-      } else {
-        container.classList.add('vertical');
-        btnToggle.textContent = 'Cambiar a vista horizontal';
-      }
-    });
 
     function toggle(el) {
       if (el.classList.contains('locked')) return;
@@ -266,4 +252,5 @@
   </script>
 </body>
 </html>
+
 
