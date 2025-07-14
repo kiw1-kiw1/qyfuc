@@ -1,161 +1,235 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Malla Química y Farmacia</title>
   <style>
     body {
       font-family: sans-serif;
-      background: #f9f9ff;
-      padding: 2em;
+      background: #f3e5f5;
+      padding: 1.5em;
+      margin: 0;
+      color: #4a148c;
     }
     h1 {
       color: #4a148c;
-    }
-    .vista-toggle {
-      margin-bottom: 1em;
-    }
-    .malla {
-      display: flex;
-      gap: 1em;
-      overflow-x: auto;
-    }
-    .vertical .malla {
-      flex-direction: column;
-    }
-    .semestre {
-      background: #f3e5f5;
-      border: 2px solid #ce93d8;
-      border-radius: 12px;
-      padding: 1em;
-      min-width: 220px;
-    }
-    .semestre h2 {
       text-align: center;
-      color: #6a1b9a;
+      margin-bottom: 1rem;
     }
-    .curso {
-      margin: 5px 0;
-      padding: 8px 12px;
-      border: 2px solid #ba68c8;
-      border-radius: 8px;
-      background: white;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .curso:hover {
-      background: #f8e8ff;
-    }
-    .aprobado {
-      background: #d1c4e9;
-      border-color: #6a1b9a;
-    }
-    .curso.locked {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background-color: #ffe6f0;
-      border-color: #ff8a8a;
-    }
-    button {
-      padding: 8px 16px;
-      background-color: #ab47bc;
-      color: white;
+    .btn-toggle {
+      background-color: #7e57c2;
       border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 0 auto 1.5rem auto;
+      display: block;
+      font-size: 1rem;
       border-radius: 6px;
       cursor: pointer;
-      margin-bottom: 1em;
+      transition: background-color 0.3s;
     }
-    button:hover {
-      background-color: #9c27b0;
+    .btn-toggle:hover {
+      background-color: #5e35b1;
+    }
+    .container {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scroll-behavior: smooth;
+    }
+    .container.vertical {
+      flex-direction: column;
+      overflow-x: visible;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding-right: 1rem;
+    }
+    .semestre {
+      background: white;
+      border: 2px solid #9c27b0;
+      border-radius: 12px;
+      padding: 1rem;
+      min-width: 280px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgb(156 39 176 / 0.2);
+    }
+    .semestre h2 {
+      margin-top: 0;
+      border-bottom: 2px solid #ce93d8;
+      padding-bottom: 0.3rem;
+    }
+    .curso {
+      display: inline-block;
+      margin: 6px 6px 6px 0;
+      padding: 8px 14px;
+      border: 2px solid #9c27b0;
+      border-radius: 10px;
+      background: #f8bbd0;
+      color: #4a148c;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.25s;
+      font-size: 0.9rem;
+    }
+    .curso:hover {
+      background: #ce93d8;
+    }
+    .aprobado {
+      background: #7b1fa2;
+      border-color: #4a148c;
+      color: white;
+      font-weight: 600;
+    }
+    .curso.locked {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background-color: #f3e5f5;
+      border-color: #ce93d8;
+      color: #9c27b0;
+      text-decoration: line-through;
     }
   </style>
 </head>
-<body class="horizontal">
-  <h1>Malla Química y Farmacia</h1>
-  <div class="vista-toggle">
-    <button onclick="alternarVista()">Cambiar vista</button>
-  </div>
-  <div class="malla">
-    <!-- Los semestres se insertarán con JavaScript -->
+<body>
+  <h1>Malla Química y Farmacia UC</h1>
+  <button class="btn-toggle" id="btnToggle">Cambiar a vista horizontal</button>
+
+  <div class="container vertical" id="semestres">
+    <!-- 1º Semestre -->
+    <div class="semestre">
+      <h2>1° Semestre</h2>
+      <div class="curso" id="quimicaI" onclick="toggle(this)">Química General I</div>
+      <div class="curso" id="introFarmaceuticas" onclick="toggle(this)">Introducción a las ciencias farmacéuticas</div>
+      <div class="curso" id="medicamentos" onclick="toggle(this)">El mundo de los medicamentos</div>
+      <div class="curso" id="labQuimicaI" onclick="toggle(this)">Laboratorio de Química General</div>
+      <div class="curso" id="precalculo" onclick="toggle(this)">Precálculo</div>
+      <div class="curso" id="filosofia" onclick="toggle(this)">Filosofía ¿Para qué?</div>
+    </div>
+
+    <!-- 2º Semestre -->
+    <div class="semestre">
+      <h2>2° Semestre</h2>
+      <div class="curso locked" id="quimicaII" onclick="toggle(this)" data-prereqs="quimicaI">Química General II</div>
+      <div class="curso locked" id="calculoI" onclick="toggle(this)" data-prereqs="precalculo">Cálculo I</div>
+      <div class="curso" id="fisica" onclick="toggle(this)">Física para ciencias</div>
+      <div class="curso" id="electivo1" onclick="toggle(this)">Electivo de formación general</div>
+      <div class="curso" id="electivo2" onclick="toggle(this)">Electivo de formación general</div>
+    </div>
+
+    <!-- 3º Semestre -->
+    <div class="semestre">
+      <h2>3° Semestre</h2>
+      <div class="curso locked" id="organicaI" onclick="toggle(this)" data-prereqs="quimicaII">Química Orgánica I</div>
+      <div class="curso locked" id="estadistica" onclick="toggle(this)" data-prereqs="calculoI">Estadística para Química y Farmacia</div>
+      <div class="curso" id="biocelular" onclick="toggle(this)">Biología de la célula</div>
+      <div class="curso locked" id="farmacognosia" onclick="toggle(this)" data-prereqs="quimicaII">Botánica y Farmacognosia</div>
+      <div class="curso" id="electivo3" onclick="toggle(this)">Electivo de formación general</div>
+    </div>
+
+    <!-- 4º Semestre -->
+    <div class="semestre">
+      <h2>4° Semestre</h2>
+      <div class="curso locked" id="organicaII" onclick="toggle(this)" data-prereqs="organicaI">Química Orgánica II</div>
+      <div class="curso locked" id="analitica" onclick="toggle(this)" data-prereqs="estadistica,quimicaII">Química Analítica I</div>
+      <div class="curso locked" id="fisiologia" onclick="toggle(this)" data-prereqs="biocelular">Fisiología</div>
+      <div class="curso" id="electivo4" onclick="toggle(this)">Electivo de formación general</div>
+      <div class="curso" id="electivo5" onclick="toggle(this)">Electivo de formación general</div>
+    </div>
+
+    <!-- 5º Semestre -->
+    <div class="semestre">
+      <h2>5° Semestre</h2>
+      <div class="curso locked" id="labOrganica" onclick="toggle(this)" data-prereqs="organicaII">Laboratorio de Química Orgánica</div>
+      <div class="curso locked" id="bioquimica" onclick="toggle(this)" data-prereqs="organicaII">Bioquímica</div>
+      <div class="curso locked" id="quimicaFisica" onclick="toggle(this)" data-prereqs="analitica,fisica,calculoI">Química-Física</div>
+      <div class="curso locked" id="analisisInstr" onclick="toggle(this)" data-prereqs="analitica">Análisis Instrumental</div>
+      <div class="curso locked" id="fisiopatologia" onclick="toggle(this)" data-prereqs="fisiologia">Fisiopatología</div>
+    </div>
+
+    <!-- 6º Semestre -->
+    <div class="semestre">
+      <h2>6° Semestre</h2>
+      <div class="curso locked" id="microbio" onclick="toggle(this)" data-prereqs="bioquimica,fisiologia">Microbiología e Inmunobiología</div>
+      <div class="curso locked" id="farmacoQuimicaI" onclick="toggle(this)" data-prereqs="labOrganica,quimicaFisica">Fármaco-Química I</div>
+      <div class="curso locked" id="farmacocinetica" onclick="toggle(this)" data-prereqs="quimicaFisica">Farmacocinética y Bio-farmacia</div>
+      <div class="curso locked" id="farmacologiaI" onclick="toggle(this)" data-prereqs="bioquimica,fisiopatologia">Farmacología I</div>
+      <div class="curso" id="electivo6" onclick="toggle(this)">Electivo de formación general</div>
+    </div>
+
+    <!-- 7º Semestre -->
+    <div class="semestre">
+      <h2>7° Semestre</h2>
+      <div class="curso locked" id="farmacoQuimicaII" onclick="toggle(this)" data-prereqs="farmacoQuimicaI,farmacologiaI">Fármaco-Química II</div>
+      <div class="curso locked" id="tecnologiaFarmaceuticaI" onclick="toggle(this)" data-prereqs="farmacocinetica,analisisInstr">Tecnología Farmacéutica I</div>
+      <div class="curso locked" id="farmacologiaII" onclick="toggle(this)" data-prereqs="farmacologiaI">Farmacología II</div>
+      <div class="curso locked" id="bioquimicaClinica" onclick="toggle(this)" data-prereqs="fisiopatologia,farmacologiaI,bioquimica">Bioquímica Clínica</div>
+      <div class="curso" id="electivo7" onclick="toggle(this)">Electivo de formación general</div>
+    </div>
+
+    <!-- 8º Semestre -->
+    <div class="semestre">
+      <h2>8° Semestre</h2>
+      <div class="curso locked" id="toxicologia" onclick="toggle(this)" data-prereqs="farmacoQuimicaII,farmacologiaII">Toxicología</div>
+      <div class="curso locked" id="tesisGrado" onclick="toggle(this)" data-prereqs="tecnologiaFarmaceuticaI,farmacologiaII">Tesis de Grado</div>
+    </div>
+
+    <!-- 9º Semestre -->
+    <div class="semestre">
+      <h2>9° Semestre</h2>
+      <div class="curso locked" id="farmacoQuimicaIII" onclick="toggle(this)" data-prereqs="farmacoQuimicaII">Fármaco-Química III</div>
+      <div class="curso locked" id="farmaciaClinica" onclick="toggle(this)" data-prereqs="farmacologiaII,farmacoQuimicaIII">Farmacia Clínica y Atención Farmacéutica</div>
+      <div class="curso locked" id="farmacologiaIII" onclick="toggle(this)" data-prereqs="farmacologiaII,farmacoQuimicaIII">Farmacología III</div>
+      <div class="curso locked" id="tecnologiaFarmaceuticaII" onclick="toggle(this)" data-prereqs="tecnologiaFarmaceuticaI">Tecnología Farmacéutica II</div>
+      <div class="curso" id="optativoProf1" onclick="toggle(this)">Optativo de profundización</div>
+      <div class="curso locked" id="practicaProfI" onclick="toggle(this)" data-prereqs="tecnologiaFarmaceuticaI,farmacoQuimicaII">Práctica Profesional I</div>
+    </div>
+
+    <!-- 10º Semestre -->
+    <div class="semestre">
+      <h2>10° Semestre</h2>
+      <div class="curso locked" id="saludPublica" onclick="toggle(this)" data-prereqs="farmacologiaI,estadistica">Salud Pública para Química y Farmacia</div>
+      <div class="curso locked" id="internadoClinico" onclick="toggle(this)" data-prereqs="farmaciaClinica,farmacologiaIII">Internado Clínico</div>
+      <div class="curso locked" id="farmaciaPrivada" onclick="toggle(this)" data-prereqs="farmacoQuimicaII">Farmacia Privada</div>
+      <div class="curso locked" id="legislacion" onclick="toggle(this)" data-prereqs="farmacoQuimicaI">Legislación y Deontología Farmacéutica</div>
+      <div class="curso" id="optativoProf2" onclick="toggle(this)">Optativo de profundización</div>
+      <div class="curso" id="optativoProf3" onclick="toggle(this)">Optativo de profundización</div>
+      <div class="curso locked" id="practicaProfII" onclick="toggle(this)" data-prereqs="farmacoQuimicaII,tecnologiaFarmaceuticaI">Práctica Profesional II</div>
+    </div>
   </div>
 
   <script>
-    const cursos = [
-      { nombre: "Química General I", id: "quimicaI", semestre: 1 },
-      { nombre: "Introducción a las ciencias farmacéuticas", id: "introFarmaceuticas", semestre: 1 },
-      { nombre: "El mundo de los medicamentos", id: "medicamentos", semestre: 1 },
-      { nombre: "Laboratorio de Química General", id: "labQuimicaI", semestre: 1 },
-      { nombre: "Precálculo", id: "precalculo", semestre: 1 },
-      { nombre: "Filosofía ¿Para qué?", id: "filosofia", semestre: 1 },
+    const container = document.getElementById('semestres');
+    const btnToggle = document.getElementById('btnToggle');
 
-      { nombre: "Química General II", id: "quimicaII", semestre: 2, prereqs: ["quimicaI"] },
-      { nombre: "Cálculo I", id: "calculoI", semestre: 2, prereqs: ["precalculo"] },
-      { nombre: "Física para ciencias", id: "fisica", semestre: 2 },
-      { nombre: "Electivo Formación General", id: "electivo1", semestre: 2 },
-      { nombre: "Electivo Formación General", id: "electivo2", semestre: 2 },
-
-      { nombre: "Química Orgánica I", id: "organicaI", semestre: 3, prereqs: ["quimicaII"] },
-      { nombre: "Estadística para Química y Farmacia", id: "estadistica", semestre: 3, prereqs: ["calculoI"] },
-      { nombre: "Biología de la célula", id: "biocelular", semestre: 3 },
-      { nombre: "Botánica y Farmacognosia", id: "farmacognosia", semestre: 3, prereqs: ["quimicaII"] },
-      { nombre: "Electivo Formación General", id: "electivo3", semestre: 3 },
-
-      { nombre: "Química Orgánica II", id: "organicaII", semestre: 4, prereqs: ["organicaI"] },
-      { nombre: "Química Analítica", id: "analitica", semestre: 4, prereqs: ["quimicaII", "estadistica"] },
-      { nombre: "Fisiología", id: "fisiologia", semestre: 4, prereqs: ["biocelular"] },
-      { nombre: "Electivo Formación General", id: "electivo4", semestre: 4 },
-      { nombre: "Electivo Formación General", id: "electivo5", semestre: 4 },
-
-      // Puedes seguir agregando más cursos del 5º al 10º semestre aquí con la misma estructura
-    ];
-
-    function crearMalla() {
-      const contenedor = document.querySelector('.malla');
-      contenedor.innerHTML = '';
-      const porSemestre = {};
-
-      cursos.forEach(curso => {
-        if (!porSemestre[curso.semestre]) {
-          porSemestre[curso.semestre] = [];
-        }
-        porSemestre[curso.semestre].push(curso);
-      });
-
-      Object.keys(porSemestre).sort((a, b) => a - b).forEach(num => {
-        const semestreDiv = document.createElement('div');
-        semestreDiv.classList.add('semestre');
-        semestreDiv.innerHTML = `<h2>${num}° Semestre</h2>`;
-        porSemestre[num].forEach(curso => {
-          const div = document.createElement('div');
-          div.className = 'curso';
-          div.id = curso.id;
-          div.textContent = curso.nombre;
-          if (curso.prereqs) {
-            div.classList.add('locked');
-            div.dataset.prereqs = curso.prereqs.join(',');
-          }
-          div.onclick = () => toggle(div);
-          semestreDiv.appendChild(div);
-        });
-        contenedor.appendChild(semestreDiv);
-      });
-
-      restaurarProgreso();
-      habilitarCursos();
-    }
+    btnToggle.addEventListener('click', () => {
+      if (container.classList.contains('vertical')) {
+        container.classList.remove('vertical');
+        btnToggle.textContent = 'Cambiar a vista vertical';
+      } else {
+        container.classList.add('vertical');
+        btnToggle.textContent = 'Cambiar a vista horizontal';
+      }
+    });
 
     function toggle(el) {
       if (el.classList.contains('locked')) return;
       el.classList.toggle('aprobado');
-      guardarProgreso();
+      guardarEstado();
       habilitarCursos();
     }
 
     function habilitarCursos() {
-      document.querySelectorAll('.curso.locked').forEach(curso => {
-        const ids = curso.dataset.prereqs?.split(',') || [];
-        const habilitado = ids.every(id => document.getElementById(id)?.classList.contains('aprobado'));
-        if (habilitado) {
+      const cursos = document.querySelectorAll('.curso.locked');
+      cursos.forEach(curso => {
+        const prereqs = curso.dataset.prereqs;
+        if (!prereqs) return;
+        const ids = prereqs.split(',').map(id => id.trim());
+        const aprobados = ids.every(id => {
+          const prereq = document.getElementById(id);
+          return prereq && prereq.classList.contains('aprobado');
+        });
+        if (aprobados) {
           curso.classList.remove('locked');
         } else {
           curso.classList.add('locked');
@@ -164,29 +238,32 @@
       });
     }
 
-    function guardarProgreso() {
-      const ids = [...document.querySelectorAll('.curso.aprobado')].map(el => el.id);
-      localStorage.setItem('malla-aprobados', JSON.stringify(ids));
+    function guardarEstado() {
+      const cursos = document.querySelectorAll('.curso');
+      const estado = {};
+      cursos.forEach(curso => {
+        estado[curso.id] = curso.classList.contains('aprobado');
+      });
+      localStorage.setItem('estadoCursosQyF', JSON.stringify(estado));
     }
 
-    function restaurarProgreso() {
-      const aprobados = JSON.parse(localStorage.getItem('malla-aprobados') || '[]');
-      aprobados.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('aprobado');
+    function cargarEstado() {
+      const estado = JSON.parse(localStorage.getItem('estadoCursosQyF'));
+      if (!estado) return;
+      Object.entries(estado).forEach(([id, aprobado]) => {
+        const curso = document.getElementById(id);
+        if (curso) {
+          if (aprobado) curso.classList.add('aprobado');
+          else curso.classList.remove('aprobado');
+        }
       });
     }
 
-    function alternarVista() {
-      const body = document.body;
-      if (body.classList.contains('vertical')) {
-        body.classList.remove('vertical');
-      } else {
-        body.classList.add('vertical');
-      }
-    }
-
-    window.onload = crearMalla;
+    window.onload = () => {
+      cargarEstado();
+      habilitarCursos();
+    };
   </script>
 </body>
 </html>
+
