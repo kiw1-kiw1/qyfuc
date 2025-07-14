@@ -70,6 +70,60 @@
     <div class="curso" id="electivo5" onclick="toggle(this)">Electivo Formación Teológica</div>
   </div>
 
+  <div class="semestre">
+  <h2>5° Semestre</h2>
+  <div class="curso locked" id="labOrganica" onclick="toggle(this)" data-prereqs="organicaII">Laboratorio de Química Orgánica</div>
+  <div class="curso locked" id="bioquimica" onclick="toggle(this)" data-prereqs="organicaII">Bioquímica</div>
+  <div class="curso locked" id="quimicaFisica" onclick="toggle(this)" data-prereqs="analitica,fisica,calculoI">Química-Física</div>
+  <div class="curso locked" id="instrumental" onclick="toggle(this)" data-prereqs="analitica">Análisis Instrumental</div>
+  <div class="curso locked" id="fisiopatologia" onclick="toggle(this)" data-prereqs="fisiologia">Fisiopatología</div>
+</div>
+
+<div class="semestre">
+  <h2>6° Semestre</h2>
+  <div class="curso locked" id="microbiologia" onclick="toggle(this)" data-prereqs="bioquimica,fisiologia">Microbiología e Inmunología</div>
+  <div class="curso locked" id="farmacoI" onclick="toggle(this)" data-prereqs="labOrganica,quimicaFisica">Fármaco-Química I</div>
+  <div class="curso locked" id="farmacocinetica" onclick="toggle(this)" data-prereqs="quimicaFisica">Farmacocinética y Bio-farmacia</div>
+  <div class="curso locked" id="farmacologiaI" onclick="toggle(this)" data-prereqs="bioquimica,fisiopatologia">Farmacología I</div>
+  <div class="curso" onclick="toggle(this)">Electivo Formación General</div>
+</div>
+
+<div class="semestre">
+  <h2>7° Semestre</h2>
+  <div class="curso locked" id="farmacoII" onclick="toggle(this)" data-prereqs="farmacoI,farmacologiaI">Fármaco-Química II</div>
+  <div class="curso locked" id="tecfarmaI" onclick="toggle(this)" data-prereqs="farmacocinetica,instrumental">Tecnología Farmacéutica I</div>
+  <div class="curso locked" id="farmacologiaII" onclick="toggle(this)" data-prereqs="farmacologiaI">Farmacología II</div>
+  <div class="curso locked" id="bioqClinica" onclick="toggle(this)" data-prereqs="fisiopatologia,farmacologiaI,bioquimica">Bioquímica Clínica</div>
+  <div class="curso" onclick="toggle(this)">Electivo Formación General</div>
+</div>
+
+<div class="semestre">
+  <h2>8° Semestre</h2>
+  <div class="curso locked" id="toxicologia" onclick="toggle(this)" data-prereqs="farmacoII,farmacologiaII">Toxicología</div>
+  <div class="curso locked" id="tesis" onclick="toggle(this)" data-prereqs="tecfarmaI,farmacologiaII">Tesis de Grado</div>
+</div>
+
+<div class="semestre">
+  <h2>9° Semestre</h2>
+  <div class="curso locked" id="farmacoIII" onclick="toggle(this)" data-prereqs="farmacoII">Fármaco-Química III</div>
+  <div class="curso locked" id="farmaciaClinica" onclick="toggle(this)" data-prereqs="farmacologiaII,farmacoIII">Farmacia Clínica y Atención Farmacéutica</div>
+  <div class="curso locked" id="farmacologiaIII" onclick="toggle(this)" data-prereqs="farmacologiaII,farmacoIII">Farmacología III</div>
+  <div class="curso locked" id="tecfarmaII" onclick="toggle(this)" data-prereqs="tecfarmaI">Tecnología Farmacéutica II</div>
+  <div class="curso" onclick="toggle(this)">Optativo de Profundización</div>
+  <div class="curso locked" id="practicaI" onclick="toggle(this)" data-prereqs="tecfarmaI,farmacoII">Práctica Profesional I</div>
+</div>
+
+<div class="semestre">
+  <h2>10° Semestre</h2>
+  <div class="curso locked" id="saludPublica" onclick="toggle(this)" data-prereqs="farmacologiaI,estadistica">Salud Pública para Química y Farmacia</div>
+  <div class="curso locked" id="internado" onclick="toggle(this)" data-prereqs="instrumental">Internado Clínico</div>
+  <div class="curso locked" id="farmaciaPrivada" onclick="toggle(this)" data-prereqs="farmacoII">Farmacia Privada</div>
+  <div class="curso locked" id="legislacion" onclick="toggle(this)" data-prereqs="farmacoI">Legislación y Deontología Farmacéutica</div>
+  <div class="curso" onclick="toggle(this)">Optativo de Profundización</div>
+  <div class="curso" onclick="toggle(this)">Optativo de Profundización</div>
+  <div class="curso locked" id="practicaII" onclick="toggle(this)" data-prereqs="farmacoII,tecfarmaI">Práctica Profesional II</div>
+</div>
+
   <script>
     function toggle(el) {
       if (el.classList.contains('locked')) return;
