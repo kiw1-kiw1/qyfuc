@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Química y Farmacia</title>
+  <style>
+    body { font-family: sans-serif; background: #f9f9f9; padding: 2em; }
+    h1 { color: #444; }
+    .semestre { margin-bottom: 2em; }
+    .curso {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 15px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .curso:hover { background: #f0f0f0; }
+    .aprobado {
+      background: #c8e6c9;
+      border-color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Química y Farmacia</h1>
+
+  <div class="semestre">
+    <h2>1° Semestre</h2>
+    <div class="curso" onclick="toggle(this)">Química General</div>
+    <div class="curso" onclick="toggle(this)">Biología Celular</div>
+    <div class="curso" onclick="toggle(this)">Cálculo I</div>
+  </div>
+
+  <div class="semestre">
+    <h2>2° Semestre</h2>
+    <div class="curso" onclick="toggle(this)">Química Orgánica I</div>
+    <div class="curso" onclick="toggle(this)">Farmacognosia</div>
+    <div class="curso" onclick="toggle(this)">Física</div>
+  </div>
+
+  <script>
+    function toggle(el) {
+      el.classList.toggle('aprobado');
+    }
+  </script>
+</body>
+</html>
