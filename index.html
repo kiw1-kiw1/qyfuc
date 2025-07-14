@@ -1,186 +1,192 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Malla Química y Farmacia</title>
   <style>
     body {
       font-family: sans-serif;
-      background: #f8f5fc;
+      background: #f9f9ff;
       padding: 2em;
     }
     h1 {
       color: #4a148c;
     }
+    .vista-toggle {
+      margin-bottom: 1em;
+    }
+    .malla {
+      display: flex;
+      gap: 1em;
+      overflow-x: auto;
+    }
+    .vertical .malla {
+      flex-direction: column;
+    }
     .semestre {
-      margin-bottom: 2em;
+      background: #f3e5f5;
+      border: 2px solid #ce93d8;
+      border-radius: 12px;
+      padding: 1em;
+      min-width: 220px;
+    }
+    .semestre h2 {
+      text-align: center;
+      color: #6a1b9a;
     }
     .curso {
-      display: inline-block;
-      margin: 5px;
-      padding: 10px 15px;
-      border: 2px solid #b39ddb;
+      margin: 5px 0;
+      padding: 8px 12px;
+      border: 2px solid #ba68c8;
       border-radius: 8px;
-      background: #ede7f6;
+      background: white;
       cursor: pointer;
       transition: 0.2s;
-      color: #4a148c;
     }
     .curso:hover {
-      background: #d1c4e9;
+      background: #f8e8ff;
     }
     .aprobado {
-      background: #dcedc8;
-      border-color: #558b2f;
-      color: #33691e;
+      background: #d1c4e9;
+      border-color: #6a1b9a;
     }
     .curso.locked {
       opacity: 0.5;
       cursor: not-allowed;
-      background-color: #f8bbd0;
-      border-color: #f06292;
-      color: #6a1b9a;
+      background-color: #ffe6f0;
+      border-color: #ff8a8a;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #ab47bc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 1em;
+    }
+    button:hover {
+      background-color: #9c27b0;
     }
   </style>
 </head>
-<body>
+<body class="horizontal">
   <h1>Malla Química y Farmacia</h1>
-
-  <div id="malla"></div>
+  <div class="vista-toggle">
+    <button onclick="alternarVista()">Cambiar vista</button>
+  </div>
+  <div class="malla">
+    <!-- Los semestres se insertarán con JavaScript -->
+  </div>
 
   <script>
     const cursos = [
-      { id: "quimicaI", nombre: "Química General I", semestre: 1 },
-      { id: "introFarmaceuticas", nombre: "Introducción a las ciencias farmacéuticas", semestre: 1 },
-      { id: "medicamentos", nombre: "El mundo de los medicamentos", semestre: 1 },
-      { id: "labQuimica", nombre: "Laboratorio de Química General", semestre: 1 },
-      { id: "precalculo", nombre: "Precálculo", semestre: 1 },
-      { id: "filosofia", nombre: "Filosofía ¿Para qué?", semestre: 1 },
+      { nombre: "Química General I", id: "quimicaI", semestre: 1 },
+      { nombre: "Introducción a las ciencias farmacéuticas", id: "introFarmaceuticas", semestre: 1 },
+      { nombre: "El mundo de los medicamentos", id: "medicamentos", semestre: 1 },
+      { nombre: "Laboratorio de Química General", id: "labQuimicaI", semestre: 1 },
+      { nombre: "Precálculo", id: "precalculo", semestre: 1 },
+      { nombre: "Filosofía ¿Para qué?", id: "filosofia", semestre: 1 },
 
-      { id: "quimicaII", nombre: "Química General II", semestre: 2, prereqs: ["quimicaI"] },
-      { id: "calculoI", nombre: "Cálculo I", semestre: 2, prereqs: ["precalculo"] },
-      { id: "fisica", nombre: "Física para ciencias", semestre: 2 },
-      { id: "electivo1", nombre: "Electivo Formación General", semestre: 2 },
-      { id: "electivo2", nombre: "Electivo Formación General", semestre: 2 },
+      { nombre: "Química General II", id: "quimicaII", semestre: 2, prereqs: ["quimicaI"] },
+      { nombre: "Cálculo I", id: "calculoI", semestre: 2, prereqs: ["precalculo"] },
+      { nombre: "Física para ciencias", id: "fisica", semestre: 2 },
+      { nombre: "Electivo Formación General", id: "electivo1", semestre: 2 },
+      { nombre: "Electivo Formación General", id: "electivo2", semestre: 2 },
 
-      { id: "organicaI", nombre: "Química Orgánica I", semestre: 3, prereqs: ["quimicaII"] },
-      { id: "estadistica", nombre: "Estadística para Química y Farmacia", semestre: 3, prereqs: ["calculoI"] },
-      { id: "biocelular", nombre: "Biología de la célula", semestre: 3 },
-      { id: "farmacognosia", nombre: "Botánica y Farmacognosia", semestre: 3, prereqs: ["quimicaII"] },
-      { id: "electivo3", nombre: "Electivo Formación General", semestre: 3 },
+      { nombre: "Química Orgánica I", id: "organicaI", semestre: 3, prereqs: ["quimicaII"] },
+      { nombre: "Estadística para Química y Farmacia", id: "estadistica", semestre: 3, prereqs: ["calculoI"] },
+      { nombre: "Biología de la célula", id: "biocelular", semestre: 3 },
+      { nombre: "Botánica y Farmacognosia", id: "farmacognosia", semestre: 3, prereqs: ["quimicaII"] },
+      { nombre: "Electivo Formación General", id: "electivo3", semestre: 3 },
 
-      { id: "organicaII", nombre: "Química Orgánica II", semestre: 4, prereqs: ["organicaI"] },
-      { id: "analitica", nombre: "Química Analítica", semestre: 4, prereqs: ["estadistica", "quimicaII"] },
-      { id: "fisiologia", nombre: "Fisiología", semestre: 4, prereqs: ["biocelular"] },
-      { id: "electivo4", nombre: "Electivo Formación General", semestre: 4 },
-      { id: "electivo5", nombre: "Electivo Formación General", semestre: 4 },
+      { nombre: "Química Orgánica II", id: "organicaII", semestre: 4, prereqs: ["organicaI"] },
+      { nombre: "Química Analítica", id: "analitica", semestre: 4, prereqs: ["quimicaII", "estadistica"] },
+      { nombre: "Fisiología", id: "fisiologia", semestre: 4, prereqs: ["biocelular"] },
+      { nombre: "Electivo Formación General", id: "electivo4", semestre: 4 },
+      { nombre: "Electivo Formación General", id: "electivo5", semestre: 4 },
 
-      { id: "labOrganica", nombre: "Laboratorio de Química Orgánica", semestre: 5, prereqs: ["organicaII"] },
-      { id: "bioquimica", nombre: "Bioquímica", semestre: 5, prereqs: ["organicaII"] },
-      { id: "quimicaFisica", nombre: "Química-Física", semestre: 5, prereqs: ["analitica", "fisica", "calculoI"] },
-      { id: "instrumental", nombre: "Análisis Instrumental", semestre: 5, prereqs: ["analitica"] },
-      { id: "fisiopato", nombre: "Fisiopatología", semestre: 5, prereqs: ["fisiologia"] },
-
-      { id: "microbio", nombre: "Microbiología e Inmunobiología", semestre: 6, prereqs: ["bioquimica", "fisiologia"] },
-      { id: "farmacoI", nombre: "Fármaco-Química I", semestre: 6, prereqs: ["labOrganica", "quimicaFisica"] },
-      { id: "farmacocinetica", nombre: "Farmacocinética y Bio-farmacia", semestre: 6, prereqs: ["quimicaFisica"] },
-      { id: "farmacologiaI", nombre: "Farmacología I", semestre: 6, prereqs: ["bioquimica", "fisiopato"] },
-      { id: "electivo6", nombre: "Electivo Formación General", semestre: 6 },
-
-      { id: "farmacoII", nombre: "Fármaco-Química II", semestre: 7, prereqs: ["farmacoI", "farmacologiaI"] },
-      { id: "tecnoI", nombre: "Tecnología Farmacéutica I", semestre: 7, prereqs: ["farmacocinetica", "instrumental"] },
-      { id: "farmacologiaII", nombre: "Farmacología II", semestre: 7, prereqs: ["farmacologiaI"] },
-      { id: "bioquimicaClinica", nombre: "Bioquímica Clínica", semestre: 7, prereqs: ["fisiopato", "farmacologiaI", "bioquimica"] },
-      { id: "electivo7", nombre: "Electivo Formación General", semestre: 7 },
-
-      { id: "toxicologia", nombre: "Toxicología", semestre: 8, prereqs: ["farmacoII", "farmacologiaII"] },
-      { id: "tesis", nombre: "Tesis de Grado", semestre: 8, prereqs: ["tecnoI", "farmacologiaII"] },
-
-      { id: "farmacoIII", nombre: "Fármaco-Química III", semestre: 9, prereqs: ["farmacoII"] },
-      { id: "clinica", nombre: "Farmacia Clínica y Atención Farmacéutica", semestre: 9, prereqs: ["farmacologiaII", "farmacoIII"] },
-      { id: "farmacologiaIII", nombre: "Farmacología III", semestre: 9, prereqs: ["farmacologiaII", "farmacoIII"] },
-      { id: "tecnoII", nombre: "Tecnología Farmacéutica II", semestre: 9, prereqs: ["tecnoI"] },
-      { id: "optativo1", nombre: "Optativo de Profundización", semestre: 9 },
-      { id: "practicaI", nombre: "Práctica Profesional I", semestre: 9, prereqs: ["tecnoI", "farmacoII"] },
-
-      { id: "saludPublica", nombre: "Salud Pública para Química y Farmacia", semestre: 10, prereqs: ["farmacologiaI", "estadistica"] },
-      { id: "internado", nombre: "Internado Clínico", semestre: 10, prereqs: ["clinica", "farmacologiaIII"] },
-      { id: "privada", nombre: "Farmacia Privada", semestre: 10, prereqs: ["farmacoII"] },
-      { id: "legislacion", nombre: "Legislación y Deontología Farmacéutica", semestre: 10, prereqs: ["farmacoI"] },
-      { id: "optativo2", nombre: "Optativo de Profundización", semestre: 10 },
-      { id: "optativo3", nombre: "Optativo de Profundización", semestre: 10 },
-      { id: "practicaII", nombre: "Práctica Profesional II", semestre: 10, prereqs: ["farmacoII", "tecnoI"] },
+      // Puedes seguir agregando más cursos del 5º al 10º semestre aquí con la misma estructura
     ];
 
-    const mallaDiv = document.getElementById("malla");
-
     function crearMalla() {
-      for (let s = 1; s <= 10; s++) {
-        const bloque = document.createElement("div");
-        bloque.className = "semestre";
-        const titulo = document.createElement("h2");
-        titulo.textContent = `${s}° Semestre`;
-        bloque.appendChild(titulo);
+      const contenedor = document.querySelector('.malla');
+      contenedor.innerHTML = '';
+      const porSemestre = {};
 
-        cursos.filter(c => c.semestre === s).forEach(curso => {
-          const div = document.createElement("div");
-          div.className = "curso";
+      cursos.forEach(curso => {
+        if (!porSemestre[curso.semestre]) {
+          porSemestre[curso.semestre] = [];
+        }
+        porSemestre[curso.semestre].push(curso);
+      });
+
+      Object.keys(porSemestre).sort((a, b) => a - b).forEach(num => {
+        const semestreDiv = document.createElement('div');
+        semestreDiv.classList.add('semestre');
+        semestreDiv.innerHTML = `<h2>${num}° Semestre</h2>`;
+        porSemestre[num].forEach(curso => {
+          const div = document.createElement('div');
+          div.className = 'curso';
           div.id = curso.id;
           div.textContent = curso.nombre;
           if (curso.prereqs) {
-            div.classList.add("locked");
-            div.dataset.prereqs = curso.prereqs.join(",");
+            div.classList.add('locked');
+            div.dataset.prereqs = curso.prereqs.join(',');
           }
           div.onclick = () => toggle(div);
-          bloque.appendChild(div);
+          semestreDiv.appendChild(div);
         });
+        contenedor.appendChild(semestreDiv);
+      });
 
-        mallaDiv.appendChild(bloque);
-      }
+      restaurarProgreso();
+      habilitarCursos();
     }
 
     function toggle(el) {
-      if (el.classList.contains("locked")) return;
-      el.classList.toggle("aprobado");
+      if (el.classList.contains('locked')) return;
+      el.classList.toggle('aprobado');
       guardarProgreso();
       habilitarCursos();
     }
 
     function habilitarCursos() {
-      document.querySelectorAll(".curso.locked").forEach(curso => {
-        const prereqs = curso.dataset.prereqs?.split(",") || [];
-        const cumplidos = prereqs.every(id =>
-          document.getElementById(id)?.classList.contains("aprobado")
-        );
-        if (cumplidos) {
-          curso.classList.remove("locked");
+      document.querySelectorAll('.curso.locked').forEach(curso => {
+        const ids = curso.dataset.prereqs?.split(',') || [];
+        const habilitado = ids.every(id => document.getElementById(id)?.classList.contains('aprobado'));
+        if (habilitado) {
+          curso.classList.remove('locked');
         } else {
-          curso.classList.add("locked");
-          curso.classList.remove("aprobado");
+          curso.classList.add('locked');
+          curso.classList.remove('aprobado');
         }
       });
     }
 
     function guardarProgreso() {
-      const aprobados = [...document.querySelectorAll(".curso.aprobado")].map(c => c.id);
-      localStorage.setItem("mallaAprobados", JSON.stringify(aprobados));
+      const ids = [...document.querySelectorAll('.curso.aprobado')].map(el => el.id);
+      localStorage.setItem('malla-aprobados', JSON.stringify(ids));
     }
 
-    function cargarProgreso() {
-      const datos = JSON.parse(localStorage.getItem("mallaAprobados") || "[]");
-      datos.forEach(id => {
-        const curso = document.getElementById(id);
-        if (curso && !curso.classList.contains("locked")) {
-          curso.classList.add("aprobado");
-        }
+    function restaurarProgreso() {
+      const aprobados = JSON.parse(localStorage.getItem('malla-aprobados') || '[]');
+      aprobados.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('aprobado');
       });
     }
 
-    window.onload = () => {
-      crearMalla();
-      cargarProgreso();
-      habilitarCursos();
-    };
+    function alternarVista() {
+      const body = document.body;
+      if (body.classList.contains('vertical')) {
+        body.classList.remove('vertical');
+      } else {
+        body.classList.add('vertical');
+      }
+    }
+
+    window.onload = crearMalla;
   </script>
 </body>
 </html>
